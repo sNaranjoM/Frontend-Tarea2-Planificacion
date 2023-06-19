@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
 import { Link } from "react-router-dom";
@@ -10,11 +10,44 @@ import {
   ExclamationDiamondFill,
   PencilSquare,
   Trash3Fill,
-  Search,
-  XLg,
 } from "react-bootstrap-icons";
 
+import ApiService from "../src/service";
+
 function App() {
+  const apiService = new ApiService();
+
+  const [dataTable, setTableData] = useState([
+    {
+      id: 1,
+      project: "",
+      projectManager: "",
+      company: "",
+    },
+  ]);
+
+  useEffect(() => {
+    //carga los datos e inicializa instancia
+    init();
+  }, []);
+
+  async function init() {
+    try {
+      apiService
+        .fetchData("listar")
+        .then((data) => {
+          setTableData(data[0])
+          console.log(data);
+        })
+        .catch((error) => {
+          // Manejar el error de la petición
+          return error;
+        });
+      // Maneja la respuesta de la solicitud POST aquí
+    } catch (error) {
+      // Maneja el error de la solicitud POST aquí
+    }
+  }
 
   $(document).ready(function () {
     $("#myTable").DataTable();
@@ -33,18 +66,13 @@ function App() {
             <a className="navbar-brand" style={{ color: "white" }}>
               Action plan
             </a>
-
           </div>
         </nav>
       </div>
 
       {/* TITLE */}
-      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <div
-          className=""
-          style={{ marginTop: "40px", marginBottom: "40px" }}
-        >
-
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <div className="" style={{ marginTop: "40px", marginBottom: "40px" }}>
           <Link
             className="btn btn-primary "
             style={{ marginRight: "200px" }}
@@ -66,41 +94,44 @@ function App() {
           <table id="myTable" className="display">
             <thead>
               <tr>
-                <th>Id Project</th>
+                <th>Id</th>
                 <th>Project</th>
-                <th>Id Task</th>
-                <th>Risk Count</th>
-                <th>Last Update</th>
-                <th>Total Points</th>
-                <th>Matrix</th>
+                <th>Project manager</th>
+                <th>Company</th>
                 <th>Edit</th>
                 <th>Delete</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>Supercop</td>
-                <td>2</td>
-                <td>9</td>
-                <td>19/03/2018</td>
-                <td>65</td>
-                <td>
-                  <button className="btn btn-outline-success">
-                    <ExclamationDiamondFill /> Matrix
-                  </button>
-                </td>
-                <td>
-                  <button className="btn btn-outline-warning">
-                    <PencilSquare /> Edit
-                  </button>
-                </td>
-                <td>
-                  <button className="btn btn-outline-danger">
-                    <Trash3Fill /> Delete
-                  </button>
-                </td>
-              </tr>
+              {dataTable.map((row, index) => (
+                <tr key={index}>
+                  <td>
+                    {" "}
+                    {/* id*/}
+                    {row.id}
+                  </td>
+                  <td>
+                    {row.project} {/* Project*/}
+                  </td>
+                  <td>
+                    {row.projectManager}
+                    {/*Project manager*/}
+                  </td>
+                  <td>
+                    {row.company} {/*Company*/}
+                  </td>
+                  <td>
+                    <button className="btn btn-outline-warning">
+                      <PencilSquare /> Edit
+                    </button>
+                  </td>
+                  <td>
+                    <button className="btn btn-outline-danger">
+                      <Trash3Fill /> Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

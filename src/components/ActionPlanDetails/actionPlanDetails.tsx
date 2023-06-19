@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {   useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
 import { Link } from "react-router-dom";
@@ -8,11 +8,7 @@ import "datatables.net-dt/css/jquery.dataTables.css";
 import $ from "jquery";
 import {
   PlusCircle,
-  ExclamationDiamondFill,
-  PencilSquare,
   Trash3Fill,
-  Search,
-  XLg,
 } from "react-bootstrap-icons";
 import ApiService from "../../service";
 //import { alert } from 'bootstrap';
@@ -57,25 +53,15 @@ export function ActionPlanDetails() {
       details,
     };
 
-    console.log(data);
     const response = await apiService.guardarActionPlanDetails(data);
+
     if (response.message === "exito") {
       setShowAlertSucess(true);
-      // Después de 3 segundos, ocultas el alert
-      setTimeout(() => {
-        setShowAlertSucess(false);
-      }, 3000);
+      setTimeout(() => { setShowAlertSucess(false);}, 3000);
     }else{
       setShowAlertFailure(true);
-      // Después de 3 segundos, ocultas el alert
-      setTimeout(() => {
-        setShowAlertFailure(false);
-      }, 3000);
-
+      setTimeout(() => { setShowAlertFailure(false); }, 3000);
     }
-    console.log(response);
-
-
 
   }
 

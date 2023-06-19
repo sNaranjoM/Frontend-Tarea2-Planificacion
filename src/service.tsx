@@ -41,16 +41,32 @@ class ApiService {
           // Maneja la respuesta de la solicitud POST aquí
         } catch (error) {
             return error;
-          console.error(error);
+          // Maneja el error de la solicitud POST aquí
+        }
+
+    }
+
+    async listarActionPlan() {
+
+        try {
+            this.fetchData('listar')
+            .then(data => {
+                console.log(data);
+              return data;
+            })
+            .catch(error => {
+              // Manejar el error de la petición
+              return error;
+            });
+          // Maneja la respuesta de la solicitud POST aquí
+        } catch (error) {
+            return error;
           // Maneja el error de la solicitud POST aquí
         }
 
     }
 
     
-
-
-
 
 
 }
